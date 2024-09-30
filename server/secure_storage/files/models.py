@@ -1,39 +1,6 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
-
-class User(AbstractUser):
-    """
-    Custom User model with additional fields for file storage project.
-    """
-    USER_ROLES = [
-        ('admin', 'Admin'),
-        ('user', 'User'),
-    ]
-    role = models.CharField(max_length=10, choices=USER_ROLES, default='user')  # Role-based access control
-    last_login_time = models.DateTimeField(default=timezone.now)  # Track last login time
-    mfa_enabled = models.BooleanField(default=False)  # For potential multi-factor authentication
-
-    # Add unique related names to avoid conflicts
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='custom_user_groups',  # Custom related_name to avoid clash
-        blank=True,
-        help_text='The groups this user belongs to.',
-        verbose_name='groups',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='custom_user_permissions',  # Custom related_name to avoid clash
-        blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
-    )
-
-    def __str__(self):
-        return self.username
-
-
+from django.contrib.auth.models import User
 
 class File(models.Model):
     """
