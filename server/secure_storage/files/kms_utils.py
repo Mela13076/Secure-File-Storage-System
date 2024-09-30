@@ -2,9 +2,14 @@ import boto3
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import os
+from dotenv import load_dotenv
+# Load environment variables from the .env file
+# Load the .env file located in server/secure_storage/
+env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+load_dotenv(env_path)
 
-aws_access_key_id='XXXXXXXXXXXXXX'
-aws_secret_access_key='XXXXXXXXXXXXXXXXXXXXXXXXX'
+aws_access_key_id=os.getenv('aws_access_key_id')
+aws_secret_access_key=os.getenv('aws_secret_access_key')
 
 # AWS clients for S3 and KMS
 session = boto3.Session(
@@ -71,13 +76,13 @@ def kms_decrypt_file(s3_bucket, s3_key, output_file_path, kms_key_id):
 
     print(f"File {output_file_path} downloaded and decrypted successfully.")
 
-# Example usage:
+# # Example usage:
 
-# Encrypt and upload a file to S3
-file_to_upload = 'uploadfile1.txt'
-s3_key = 'test.txt'
-kms_encrypt_file(file_to_upload, kms_key_id, bucket_name, s3_key)
+# # Encrypt and upload a file to S3
+# file_to_upload = 'uploadfile1.txt'
+# s3_key = 'test.txt'
+# kms_encrypt_file(file_to_upload, kms_key_id, bucket_name, s3_key)
 
-# Download and decrypt the file from S3
-downloaded_file = 'decrypt_test.txt'
-kms_decrypt_file(bucket_name, s3_key, downloaded_file, kms_key_id)
+# # Download and decrypt the file from S3
+# downloaded_file = 'decrypt_test.txt'
+# kms_decrypt_file(bucket_name, s3_key, downloaded_file, kms_key_id)
