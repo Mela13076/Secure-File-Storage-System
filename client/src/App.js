@@ -1,24 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React, { useState } from 'react';
-import Register from './Register';
-import Login from './Login';
-
-
+import Register from './Register/Register';
+import Login from './Login/Login';
+import ProtectedRoute from './ProtectedRoutes';
+import Home from "./Home/Home";
+import UploadFiles from './UploadFiles';
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
-
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
-  return (
-    <div className="App">
-      {isLogin ? <Login /> : <Register />}
-      <button onClick={toggleForm}>
-        {isLogin ? 'Go to Register' : 'Go to Login'}
-      </button>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={
+                    <ProtectedRoute>
+                        <Home />
+                        <UploadFiles />
+                    </ProtectedRoute>
+                } />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
+        </BrowserRouter>);
 }
 
 export default App;
