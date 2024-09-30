@@ -9,6 +9,7 @@ from .kms_utils import kms_decrypt_file, kms_encrypt_file
 import os
 from django.utils import timezone
 from django.http import FileResponse
+from .serializers import FileSerializer
 
 
 @api_view(["POST"])
@@ -86,3 +87,18 @@ def download_file(request, file_id):
 
     return response
 
+@api_view(["GET"])
+@authentication_classes([JWTAuthentication])  # Use JWT for authentication
+@permission_classes([IsAuthenticated])  # Ensure the user is authenticated
+def all_files(request):
+    # Get the currently authenticated user
+    user = request.user
+
+    # Retrieve files uploaded by the authenticated user
+    user_files = File.objects.filter(user=user)
+
+    # Serialize the files data
+    serializer = FileSerializer(user_files, many=True)
+
+    # Return the serialized data as a JSON response
+    return Response(serializer.data)
