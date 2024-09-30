@@ -15,7 +15,9 @@ function App() {
                 <Route path="/home" element={
                     <ProtectedRoute>
                         <Home />
-                        <UploadFiles />
+                        <div className='main-container'>
+                            <UploadFiles />
+                        </div>
                     </ProtectedRoute>
                 } />
                 <Route path="/login" element={<Login />} />

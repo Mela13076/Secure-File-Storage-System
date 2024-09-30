@@ -39,13 +39,12 @@
 }
 
 /* General Styling for Both Forms */
-.login-container {
+.login-container, .main-container {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 70vh;
   margin: 0;
 }
 .center-align-text {
@@ -119,4 +118,8 @@
     box-sizing: border-box;
     transition: border 0.3s ease;
   }
+}
+
+.btn-upload{
+  margin-left: 2rem;
 }

@@ -41,7 +41,7 @@ export default class UploadFiles extends Component {
 
     }
     setProgress() {
-      //  let prevProgress = (this.state.progress >= 100 ? 10 : this.state.progress + 10)
+        //  let prevProgress = (this.state.progress >= 100 ? 10 : this.state.progress + 10)
         this.setState(
             {
                 progress: 100
@@ -123,9 +123,10 @@ export default class UploadFiles extends Component {
         } = this.state;
 
         return (
-            <div className="mg20">
-              
-
+            <div className="upload-container">
+                <p className="file-name-css">
+                    {selectedFiles && selectedFiles.length > 0 ? selectedFiles[0].name : null}
+                </p>
                 <label htmlFor="btn-upload">
                     <input
                         id="btn-upload"
@@ -139,11 +140,8 @@ export default class UploadFiles extends Component {
                         component="span" >
                         Choose Files
                     </Button>
-                    <span className="file-name-css">
-                        {selectedFiles && selectedFiles.length > 0 ? selectedFiles[0].name : null}
-                    </span>
                 </label>
-
+                <span>&nbsp;&nbsp;</span>
                 <Button
                     className="btn-upload"
                     color="primary"
@@ -161,7 +159,7 @@ export default class UploadFiles extends Component {
                 {/* <Typography variant="h6" className="list-header">
                     List of Files
                 </Typography> */}
-                  {currentFile && (
+                {currentFile && (
                     <Box className="mb25" display="flex" alignItems="center">
                         <Box width="100%" mr={1}>
                             <LinearProgress variant="determinate" value={progress} />

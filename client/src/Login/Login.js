@@ -29,7 +29,7 @@ const Login = () => {
       if (response.data.token) {
         // Save the token and navigate to another route
         localStorage.setItem('authToken', response.data.token);
-        navigateTo('/home');  // navigate to /home
+        navigateTo('/home');  
       } else {
         setError('Invalid credentials');
       }
@@ -44,7 +44,7 @@ const Login = () => {
         {/* <h2 className='center-align-text'>Login</h2> */}
         <form>
           <div>
-            <label>Email:</label>
+            <label>Username:</label>
             <input
               type="text"
               name="username"
