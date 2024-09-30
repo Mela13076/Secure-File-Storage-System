@@ -32,6 +32,21 @@ To run the **frontend** part of the project, follow these steps:
 This will start the frontend, and you can access it by opening your browser and navigating to the URL provided in the terminal (usually `http://localhost:3000`).
 
 ### Backend (Server)
+---
+
+### Installing all Dependancies for Backend
+
+To download all Python dependancies needed for the project, follow these steps: 
+
+#### 1. Install All Dependanceis from `requirements.txt` file
+Ensure that you are inside the `server` folder and run the following command to intall all the dependancies listend in `requirements.txt`. :
+
+```bash
+pip install -r requirements.txt
+```
+
+### Running Backend
+
 To run the **backend** (Django server) part of the project, follow these steps:
 
 1. Open your terminal and **navigate to the `server` folder**:
