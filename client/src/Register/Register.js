@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import axios from 'axios';
+import axiosInstance from '../service';
 import { REGISTER_API } from "../constants";
 
 const Register = () => {
@@ -26,19 +25,19 @@ const Register = () => {
     // Handle registration logic here (e.g., API call)
     console.log('User registered with:', formData);
     try {
-      const response = await axios.post(REGISTER_API, {
-        username: formData.email,
+     axiosInstance.post(REGISTER_API, {
+        email: formData.email,
         password: formData.password,
         username: formData.username
+      }).then(response => {
+        if (response.data) {
+          // Save the token and navigate to another route
+          localStorage.setItem('userData', response.data);
+          navigate('/login');
+        } else {
+          setError('Invalid credentials');
+        }
       });
-
-      if (response.data) {
-        // Save the token and navigate to another route
-        localStorage.setItem('userData', response.data);
-        navigate('/login');
-      } else {
-        setError('Invalid credentials');
-      }
     } catch (err) {
       setError('An error occurred during login');
     }

@@ -1,10 +1,11 @@
 
 import React, { Component } from "react";
-import { Box, Typography, Button, ListItem, ListItemAvatar, ListItemText, IconButton, Avatar, AppBar } from '@mui/material';
+import { Box, Typography, Button, ListItem, ListItemAvatar, ListItemText, IconButton, Avatar } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import DownloadIcon from '@mui/icons-material/Download';
-import axios from 'axios';
-import { DOWNLOAD_API, GET_ALL_FILES } from "./constants";
+import axiosInstance from './service';
+import { withRouter } from 'react-router-dom';
+import { DOWNLOAD_API, GET_ALL_FILES, UPLOAD_API } from "./constants";
 
 export default class UploadFiles extends Component {
 
@@ -13,7 +14,6 @@ export default class UploadFiles extends Component {
         this.state = {
             selectedFiles: undefined,
             currentFile: undefined,
-            progress: 0,
             message: "",
             isError: false,
             fileInfos: [],
@@ -24,38 +24,27 @@ export default class UploadFiles extends Component {
         if (localStorage.getItem('userData')) {
             this.user = JSON.parse(localStorage.getItem('userData'));
             console.log(this.user);
-            
+
         }
     }
-    async downloadFile(file) {
+    downloadFile(file) {
         console.log(file);
         try {
-            const response = await axios.get(DOWNLOAD_API, {
-              file: file,
-              userId: this.user.id
-            });
-      
-            if (response.data) {
-              localStorage.setItem('userData', JSON.stringify(response.data));
-             // navigateTo('/home');  
-            } else {
-              console.log("not found");
-              
-            }
-          } catch (err) {
+            axiosInstance.get(DOWNLOAD_API, {
+                file: file,
+                userId: this.user.id
+            }).then(response => {
+                if (response && response.data) {
+                } else {
+                    console.log("not found");
+                }
+            })
+        } catch (err) {
             console.log("error downloading file");
 
-          }
+        }
     }
-    setProgress() {
-        //  let prevProgress = (this.state.progress >= 100 ? 10 : this.state.progress + 10)
-        this.setState(
-            {
-                progress: 100
-            });
-    }
-    async upload() {
-        this.setProgress();
+    upload() {
         console.log(this.state.selectedFiles);
 
         let currentFile = this.state.selectedFiles[0];
@@ -68,59 +57,49 @@ export default class UploadFiles extends Component {
         }
 
         this.setState({
-            progress: 100,
             currentFile: currentFile,
             fileInfos: listFiles,
             selectedFiles: undefined
         });
-        const response = await axios.post(this.upload, {
-            file: currentFile,
-            userId: this.user.id
+        
+        const formData = new FormData();
+        formData.append('file', currentFile);
+        
+        axiosInstance.post(UPLOAD_API, formData).then((response) => {
+            if (response && response.data) {
+                this.setState({
+                    fileInfos: response.data
+                });
+            }
+        }, (error) => {
+            this.props.history.push('/login'); 
         });
-        if (response) {
-            this.setState({
-                fileInfos: response.files.data,
-            });
-        }
-        // UploadService.upload(currentFile, (event) => {
-        //   this.setState({
-        //     progress: Math.round((100 * event.loaded) / event.total),
-        //   });
-        // })
-        //   .then((response) => {
-        //     this.setState({
-        //       message: response.data.message,
-        //       isError: false
-        //     });
-        //     return UploadService.getFiles();
-        //   })
-        //   .then((files) => {
-        //     this.setState({
-        //       fileInfos: files.data,
-        //     });
-        //   })
-        //   .catch(() => {
-        //     this.setState({
-        //       progress: 0,
-        //       message: "Could not upload the file!",
-        //       currentFile: undefined,
-        //       isError: true
-        //     });
-        //   });
 
-        // this.setState({
-        //   selectedFiles: undefined,
-        // });
+        this.setState({
+            selectedFiles: undefined,
+        });
     }
 
 
-    async componentDidMount() {
+    componentDidMount() {
+        try {
+            const userData = localStorage.getItem('userData');
 
-        const response = await axios.get(GET_ALL_FILES, {userId: this.user.id});
-        if(response && response.data){
-            this.setState({
-                fileInfos: response.data,
-              });
+            // If token exists, add it to headers
+            if (userData) {
+                const userInfo = JSON.parse(userData);
+                axiosInstance.get(GET_ALL_FILES, { userId: this.user.id }).then(response => {
+                    if (response && response.data) {
+                        this.setState({
+                            fileInfos: response.data,
+                        });
+                    }
+                }, (error) => {
+
+                });
+            }
+        } catch {
+            console.log("error in get all files");
         }
     }
 
@@ -133,7 +112,6 @@ export default class UploadFiles extends Component {
         const {
             selectedFiles,
             currentFile,
-            progress,
             message,
             fileInfos,
             isError
@@ -173,19 +151,6 @@ export default class UploadFiles extends Component {
                     {message}
                 </Typography>
 
-                {/* <Typography variant="h6" className="list-header">
-                    List of Files
-                </Typography> */}
-                {/* {currentFile && (
-                    <Box className="mb25" display="flex" alignItems="center">
-                        <Box width="100%" mr={1}>
-                            <LinearProgress variant="determinate" value={progress} />
-                        </Box>
-                        <Box minWidth={35}>
-                            <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
-                        </Box>
-                    </Box>)
-                } */}
                 <ul className="list-group">
                     {fileInfos &&
                         fileInfos.map((file, index) => {

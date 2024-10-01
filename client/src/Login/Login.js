@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import axios from 'axios';
+import axiosInstance from '../service';
 import { LOGIN_API } from "../constants";
 const Login = () => {
   // Use the useNavigate hook to get access to the navigate function
@@ -21,17 +21,17 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_API, {
+      axiosInstance.post(LOGIN_API, {
         username: formData.username,
         password: formData.password
+      }).then((response) => {
+        if (response && response.data) {
+          localStorage.setItem('userData', JSON.stringify(response.data));
+          navigateTo('/home');  
+        } else {
+          setError('Invalid credentials');
+        }
       });
-
-      if (response.data) {
-        localStorage.setItem('userData', JSON.stringify(response.data));
-        navigateTo('/home');  
-      } else {
-        setError('Invalid credentials');
-      }
     } catch (err) {
       setError('An error occurred during login');
     }

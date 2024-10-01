@@ -11,8 +11,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import axiosInstance from "../service";
+import { SIGNOUT } from "../constants";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Home() {
+  const navigate = useNavigate();
+
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [userData, setUser] = React.useState(JSON.parse(localStorage.getItem('userData')));
@@ -24,10 +30,19 @@ export default function Home() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleSignout = async () => {
     setAnchorEl(null);
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    // If token exists, add it to headers
+    if (userData && userData.refresh) {
+      axiosInstance.post(SIGNOUT, { refresh: userData.refresh }).then(resp => {
+        if(resp){
+          navigate('/login');
+        }
+      });
+    }
 
-  };
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -84,9 +99,9 @@ export default function Home() {
                   horizontal: 'right',
                 }}
                 open={Boolean(anchorEl)}
-                onClose={handleClose}
+                onClose={handleSignout}
               >
-                <MenuItem onClick={handleClose}>Signout</MenuItem>
+                <MenuItem onClick={handleSignout}>Signout</MenuItem>
                 {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
               </Menu>
             </div>
