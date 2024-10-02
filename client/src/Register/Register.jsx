@@ -149,7 +149,7 @@ const Register = () => {
 
       if (response.data) {
         // Store the user data or token and navigate to another route
-        localStorage.setItem("userData", response.data);
+        // localStorage.setItem("userData", response.data);
         navigate("/login");
       } else {
         setError("Invalid registration details");
