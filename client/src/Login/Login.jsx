@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import axios from "axios";
+import api from "../api";
 import { LOGIN_API } from "../constants";
 const Login = () => {
   // Use the useNavigate hook to get access to the navigate function
@@ -9,8 +10,8 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -21,24 +22,28 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_API, {
+      // const response = await axios.post(LOGIN_API, {
+      //   username: formData.username,
+      //   password: formData.password
+      // });
+      const response = await api.post("/login/", {
         username: formData.username,
-        password: formData.password
+        password: formData.password,
       });
 
       if (response.data) {
-        localStorage.setItem('userData', JSON.stringify(response.data));
-        navigateTo('/home');  
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        navigateTo("/home");
       } else {
-        setError('Invalid credentials');
+        setError("Invalid credentials");
       }
     } catch (err) {
-      setError('An error occurred during login');
+      setError("An error occurred during login");
     }
   };
 
   return (
-    <div className='login-container'>
+    <div className="login-container">
       <div>
         {/* <h2 className='center-align-text'>Login</h2> */}
         <form>
@@ -62,9 +67,11 @@ const Login = () => {
               required
             />
           </div>
-          <Button variant="contained" onClick={handleSubmit}>Login</Button>
+          <Button variant="contained" onClick={handleSubmit}>
+            Login
+          </Button>
         </form>
-        <Link to="/register" className='center-align-text'>
+        <Link to="/register" className="center-align-text">
           Go to Register
         </Link>
       </div>
