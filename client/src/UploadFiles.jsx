@@ -129,33 +129,42 @@ export default class UploadFiles extends Component {
           Upload
         </Button>
 
-        <ul className="list-group">
-          {fileInfos &&
-            fileInfos.map((file, index) => (
-              <Box key={index}>
-                <ListItem
-                  key={index}
-                  divider
-                  secondaryAction={
-                    <IconButton
-                      edge="end"
-                      aria-label="download"
-                      onClick={() => this.downloadFile(file)}
-                    >
-                      <DownloadIcon key={index} />
-                    </IconButton>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={`${file.file_name}`} />
-                </ListItem>
-              </Box>
-            ))}
-        </ul>
+        <Box
+          sx={{
+            maxHeight: 500, // Set the max height for the scroll
+            overflowY: "auto", // Enable vertical scroll
+            marginTop: 2,
+            border: "2px solid #007bff",
+          }}
+        >
+          <ul className="list-group">
+            {fileInfos &&
+              fileInfos.map((file, index) => (
+                <Box key={index}>
+                  <ListItem
+                    key={index}
+                    divider
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="download"
+                        onClick={() => this.downloadFile(file)}
+                      >
+                        <DownloadIcon key={index} />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={`${file.file_name}`} />
+                  </ListItem>
+                </Box>
+              ))}
+          </ul>
+        </Box>
       </div>
     );
   }
