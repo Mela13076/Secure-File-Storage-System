@@ -6,6 +6,7 @@ import Login from './Login/Login';
 import ProtectedRoute from './ProtectedRoutes';
 import Home from "./Home/Home";
 import UploadFiles from './UploadFiles';
+import Logo from './logo'
 function App() {
     return (
         <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
                     <ProtectedRoute>
                         <Home />
                         <div className='main-container'>
+                            <Logo />
                             <UploadFiles />
                         </div>
                     </ProtectedRoute>

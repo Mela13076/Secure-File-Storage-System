@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import api from "../api";
 import { LOGIN_API } from "../constants";
+import Logo from "../logo"
 const Login = () => {
   // Use the useNavigate hook to get access to the navigate function
   const navigateTo = useNavigate();
@@ -44,6 +45,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <Logo />
       <div>
         {/* <h2 className='center-align-text'>Login</h2> */}
         <form>

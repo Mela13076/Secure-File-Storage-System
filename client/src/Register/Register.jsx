@@ -97,6 +97,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { REGISTER_API } from "../constants";
+import  Logo  from "../logo"
 
 const Register = () => {
   // Use the useNavigate hook to get access to the navigate function
@@ -160,6 +161,7 @@ const Register = () => {
 
   return (
     <div className="login-container">
+      <Logo />
       <div>
         <form onSubmit={handleSubmit}>
           <div>

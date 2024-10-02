@@ -39,42 +39,48 @@
 }
 
 /* General Styling for Both Forms */
-.login-container, .main-container {
+.login-container{
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  width: 100%;
   margin: 0;
 }
+
+.logo-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
+  color: #007bff;
+}
+.logo-container .app-name{
+  margin-top: 0;
+}
+
 .main-container {
   font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
-  margin-top: 200px;
-  margin-bottom: 200px;
 }
 .center-align-text {
   display: flex;
   justify-content: center;
-  margin-left: 4rem;
 }
+
 .login-container {
-
-
   /* Form Container Styling */
   form {
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+    max-width: 400px ;
     margin: 0 auto;
     text-align: left;
     margin-bottom: 2rem;
+    margin-top: 8rem;
   }
 
   /* Button Styling */
@@ -91,7 +97,7 @@
   }
 
   h2 {
-    color: #333;
+    /* color: #333; */
     text-align: center;
   }
 
